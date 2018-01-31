@@ -937,8 +937,9 @@ void standard_job_slave(String slave_type, Closure body){
         body()
       }
     } else if (slave_type == "container"){
+      String image_name = env.BUILD_TAG.toLowerCase()
       dir("rpc-gating"){
-        container = docker.build env.BUILD_TAG.toLowerCase()
+        container = docker.build(env.BUILD_TAG.toLowerCase(), "--build-arg BASE_IMAGE=${env.SLAVE_CONTAINER_BASE_IMAGE} -f Dockerfile.standard_job .")
       }
       container.inside {
         configure_git()
