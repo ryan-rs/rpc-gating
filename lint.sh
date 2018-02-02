@@ -17,7 +17,7 @@ install(){
     virtualenv $venv
   fi
   . $venv/bin/activate
-  pip install -c constraints.txt -r test-requirements.txt >/dev/null
+  pip install -c constraints.txt -r test-requirements.txt -r requirements.txt >/dev/null
 }
 
 create_jjb_ini(){
