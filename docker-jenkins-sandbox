@@ -1,0 +1,29 @@
+FROM jenkins/jenkins:lts
+
+# deploy jenkins and jenkins plugins
+ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
+COPY jenkins_sandbox/security.groovy /usr/share/jenkins/ref/init.groovy.d/security.groovy
+COPY jenkins_sandbox/blueocean_jenkins_plugins.txt /usr/share/jenkins/ref/plugins.txt
+RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
+
+# NOTE: The step to run `jenkins-jobs` fails in the last step. Therefore,
+# there is no reason to execute the steps prior to that step. Once the reason
+# for this failure is identified, then these steps can also be automated.
+#
+# # install jenkins-job-builder
+# USER root
+# RUN apt-get update
+# RUN apt-get install -y python python-dev python-pip
+# RUN pip install --upgrade pip
+# RUN pip install jenkins-job-builder
+#
+# # deploy rpc-gating jobs
+# COPY . .
+# RUN echo '[jenkins]' > jjb.ini
+# RUN echo 'url=http://localhost:8080' >> jjb.ini
+# RUN echo 'user=admin' >> jjb.ini
+# RUN echo 'password=admin' >> jjb.ini
+# RUN pip install -r jenkins_sandbox/requirements.txt
+#
+# USER jenkins
+# RUN jenkins-jobs --conf jjb.ini update -r rpc_jobs ; exit 0
