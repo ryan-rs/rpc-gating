@@ -30,7 +30,7 @@ the browser on our local system. The current directory (intended to be the
 root of the rpc-gating checkout) is mounted within the container.
 ```
 docker run -d \
-  -p 127.0.0.1:8080:8080 \
+  -p 8080:8080 \
   --volume "$PWD":/opt/jenkins-job rpc-gating/jenkins_sandbox
 ```
 
